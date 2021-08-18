@@ -1,7 +1,7 @@
 {
   "name": "forager",
-  "version": "0.1.0",
-  "description": "A host discovery library",
+  "version": "0.2.0",
+  "description": "Host discovery library",
   "main": "main.js",
   "author": {
     "name": "chardon55",
