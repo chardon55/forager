@@ -1,3 +1,7 @@
+import { IpRangeItem } from "./data-structure"
+
+export const DEFAULT_PORT = 19856
+
 export function splitIpv4(ip: string): number[] {
     return ip.split(".").map(value => parseInt(value))
 }
@@ -25,8 +29,8 @@ export class IPIterator {
     private isCIDR: boolean
 
     public constructor(ip: string, ipType: IpType = IpType.IPv4,
-                       subnetMask?: string,
-                       isCIDR: boolean = false) {
+        subnetMask?: string,
+        isCIDR: boolean = false) {
         this.ipNumbers = splitIpv4(ip)
         this.ipType = ipType
         if (subnetMask !== null) {
@@ -146,4 +150,26 @@ export class IPIterator {
 export enum IpType {
     IPv4,
     IPv6,
+}
+
+export function getIpRangeFromString(ipRangeString: string): IpRangeItem[] {
+    const ipList = ipRangeString.split(",")
+
+    let ipRange: IpRangeItem[] = []
+
+    for (let item of ipList) {
+        const newItem = new IpRangeItem()
+        const ipItem = item.split("-")
+
+        if (ipItem.length == 1) {
+            newItem.start = newItem.end = ipItem[0]
+        } else if (ipItem.length >= 2) {
+            newItem.start = ipItem[0]
+            newItem.end = ipItem[1]
+        }
+
+        ipRange.push(newItem)
+    }
+
+    return ipRange
 }

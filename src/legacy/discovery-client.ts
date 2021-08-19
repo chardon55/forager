@@ -1,19 +1,11 @@
 import * as net from "net"
-import * as http from "http"
 
-import { IPIterator, IpType, splitIpv4 } from "./utils"
+import { IPIterator, IpType, splitIpv4 } from "../utils/utils"
+import { IpRangeItem, DiscoveryResult } from "../utils/data-structure"
 
-export class IpRangeItem {
-    public start: string
-    public end: string
-}
-
-export class DiscoveryResult {
-    public ip: string
-    public port: string
-    public msg: string
-}
-
+/**
+ * @deprecated Use Finder instead
+ */
 export default class DiscoveryClient {
 
     private ipRange: IpRangeItem[]
@@ -62,12 +54,12 @@ export default class DiscoveryClient {
     }
 
     public constructor(ipRange: IpRangeItem[] | string,
-                       subnetMask: string,
-                       {
-                           port = 3000,
-                           timeout = 100,
-                           ipType = IpType.IPv4
-                       } = { }) {
+        subnetMask: string,
+        {
+            port = 3000,
+            timeout = 100,
+            ipType = IpType.IPv4
+        } = {}) {
         if (typeof ipRange === 'string') {
             this.ipRange = DiscoveryClient.getIpRangeFromString(ipRange as string)
         } else {
