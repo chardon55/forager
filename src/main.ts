@@ -9,10 +9,10 @@ function main() {
 
     listener.listen(false, () => { })
 
-    // const finder = new Finder("192.168.43.1-192.168.43.255", "255.255.0.0")
-    // finder.findAsync().then(value => {
-    //     console.log(`Host found: ${value.ip}`)
-    // })
+    const finder = new Finder("192.168.43.1-192.168.43.255", "255.255.0.0")
+    finder.findAsync().then(value => {
+        console.log(`Host found: ${value.ip}`)
+    })
 }
 
 main()
