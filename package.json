@@ -22,7 +22,7 @@
   },
   "exports": {
     "./": "./dist"
-  }
+  },
   "devDependencies": {
     "@testdeck/mocha": "^0.1.2",
     "@types/mocha": "^9.0.0",
