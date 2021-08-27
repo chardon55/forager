@@ -105,7 +105,7 @@ export default class Listener {
         return this.savedInfo
     }
 
-    public listen(forceRelisten = false, onDataUpdate: (listener: Listener) => void): void {
+    public listen(forceRelisten = false, onDataUpdate: (listener: Listener, data: Commdata) => void = () => { }): void {
         if (this.listenerStragegy.resetSocket(this, this.socket, forceRelisten)) {
             return
         }
@@ -114,6 +114,7 @@ export default class Listener {
 
         this.listenerStragegy.useSocketAsync(this.socket, this.port, this.address, this.ip, data => {
             this.savedInfo['ip'] = data.ip
+            onDataUpdate(this, data)
         })
         console.log(this.address)
     }

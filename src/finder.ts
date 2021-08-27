@@ -7,6 +7,7 @@ import { DiscoveryResult, IpRangeItem } from "./utils/data-structure"
 import { DEFAULT_PORT, getIpRangeFromString, IPIterator, IpType } from "./utils/utils"
 import SocketFactory from "./utils/socket-factory"
 import { ListenerStretagy } from "./listener"
+import { getNetworkRange } from "./utils/networking"
 
 export default class Finder {
 
@@ -108,5 +109,9 @@ export default class Finder {
         this.mask = subnetMask
         this.port = port
         this.timeout = timeout
+    }
+
+    public get FinderNetwork(): IpRangeItem {
+        return getNetworkRange()
     }
 }

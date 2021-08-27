@@ -10,7 +10,7 @@ export function mergeIpv4(ipNumbers: number[]): string {
     return `${ipNumbers[0]}.${ipNumbers[1]}.${ipNumbers[2]}.${ipNumbers[3]}`
 }
 
-function bitNot(number) {
+export function bitNot(number: number) {
     return ~number & 255
 }
 

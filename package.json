@@ -1,13 +1,28 @@
 {
-  "name": "forager",
-  "version": "0.2.0",
+  "name": "forager-discovery",
+  "version": "0.3.0",
   "description": "Host discovery library",
   "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chardon55/forager.git"
+  },
   "author": {
     "name": "chardon55",
-    "email": "charlesdong_2000@outlook.com"
+    "email": "charlesdong_2000@outlook.com",
+    "url": "https://github.com/chardon55"
   },
+  "files": [
+    "./dist"
+  ],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./": "./dist"
+  }
   "devDependencies": {
     "@testdeck/mocha": "^0.1.2",
     "@types/mocha": "^9.0.0",
