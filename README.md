@@ -1,1 +1,4 @@
-#caiwu-lib-common
+# Forager discovery library
+
+## License
+GPLv3
