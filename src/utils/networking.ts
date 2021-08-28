@@ -1,6 +1,8 @@
+import * as os from 'os'
+
 import * as ip from 'ip'
 
-import { IpRangeItem } from "./data-structure"
+import { IpInfo, IpRangeItem } from "./data-structure"
 import { splitIpv4, bitNot } from "./utils"
 
 const DEFAULT_SEQUENCE = [
@@ -20,6 +22,32 @@ export function getHostIp(networkSequence: Array<string> = DEFAULT_SEQUENCE): st
     }
 
     return ip.address()
+}
+
+export function getHostAddressInfo(networkSequence: Array<string> = DEFAULT_SEQUENCE,
+    family: 'IPv4' | 'IPv6' = 'IPv4'): IpInfo {
+    const interfaces = os.networkInterfaces()
+
+    for (let item of networkSequence) {
+        const networkList = interfaces[item]
+        if (!networkList) {
+            continue
+        }
+
+        for (let info of networkList) {
+            if (info.family !== family) {
+                continue
+            }
+
+            const ipInfo = new IpInfo()
+            ipInfo.address = info.address
+            ipInfo.mask = info.netmask
+
+            return ipInfo
+        }
+    }
+
+    return null
 }
 
 export function getMaskByIp(ip: string): string {
@@ -42,7 +70,13 @@ export function getMaskByIp(ip: string): string {
     return "255.0.0.0"
 }
 
-export function getNetworkRange(address: string = getHostIp(), mask?: string): IpRangeItem {
+export function getNetworkRange(address?: string, mask?: string): IpRangeItem {
+    if (!address) {
+        const info = getHostAddressInfo()
+        address = info.address
+        mask = info.mask
+    }
+
     if (!mask) {
         mask = getMaskByIp(address)
     }
@@ -62,12 +96,9 @@ export function getNetworkRange(address: string = getHostIp(), mask?: string): I
         end += `${endPart}.`
     }
 
-    start.replace(/\.$/, "")
-    end.replace(/\.$/, "")
-
     const range = new IpRangeItem()
-    range.start = start
-    range.end = end
+    range.start = start.substring(0, start.length)
+    range.end = end.substring(0, end.length)
 
     return range
 }

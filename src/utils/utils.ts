@@ -1,4 +1,5 @@
 import { IpRangeItem } from "./data-structure"
+import { getMaskByIp } from "./networking"
 
 export const DEFAULT_PORT = 19856
 
@@ -33,9 +34,11 @@ export class IPIterator {
         isCIDR: boolean = false) {
         this.ipNumbers = splitIpv4(ip)
         this.ipType = ipType
-        if (subnetMask !== null) {
-            this.mask = subnetMask
+        if (!subnetMask) {
+            subnetMask = getMaskByIp(ip)
         }
+
+        this.mask = subnetMask
         this.isCIDR = isCIDR
     }
 
@@ -157,6 +160,8 @@ export function getIpRangeFromString(ipRangeString: string): IpRangeItem[] {
 
     let ipRange: IpRangeItem[] = []
 
+    let mask: string = null
+
     for (let item of ipList) {
         const newItem = new IpRangeItem()
         const ipItem = item.split("-")
@@ -168,6 +173,11 @@ export function getIpRangeFromString(ipRangeString: string): IpRangeItem[] {
             newItem.end = ipItem[1]
         }
 
+        if (mask === null) {
+            mask = getMaskByIp(newItem.start)
+        }
+
+        newItem.mask = mask
         ipRange.push(newItem)
     }
 

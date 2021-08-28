@@ -1,6 +1,7 @@
 import * as dgram from "dgram"
 import * as ip from "ip"
 import Commdata, { HostRule } from "./utils/commdata"
+import { getHostIp, getMaskByIp } from "./utils/networking"
 import SocketFactory from "./utils/socket-factory"
 import { DEFAULT_PORT } from "./utils/utils"
 
@@ -85,6 +86,8 @@ export default class Listener {
 
     private address: string
 
+    private mask: string
+
     private port: number
 
     protected socket: dgram.Socket = null
@@ -130,11 +133,23 @@ export default class Listener {
 
     public constructor({
         address = "0.0.0.0",
+        mask = null,
         port = DEFAULT_PORT,
-        guideAddress = ip.address()
+        guideAddress = null
     } = {}) {
         this.address = address
+
+        if (!mask) {
+            mask = getMaskByIp(address)
+        }
+
+        this.mask = mask
         this.port = port
+
+        if (!guideAddress) {
+            guideAddress = getHostIp()
+        }
+
         this.ip = guideAddress
     }
 }

@@ -7,7 +7,7 @@ import { DiscoveryResult, IpRangeItem } from "./utils/data-structure"
 import { DEFAULT_PORT, getIpRangeFromString, IPIterator, IpType } from "./utils/utils"
 import SocketFactory from "./utils/socket-factory"
 import { ListenerStretagy } from "./listener"
-import { getNetworkRange } from "./utils/networking"
+import { getHostAddressInfo, getHostIp, getNetworkRange } from "./utils/networking"
 
 export default class Finder {
 
@@ -19,7 +19,7 @@ export default class Finder {
 
     private port: number
 
-    private address = ip.address()
+    private address = getHostIp()
 
     private timeout: number
 
@@ -92,13 +92,18 @@ export default class Finder {
         })
     }
 
-    public constructor(ipRange: IpRangeItem[] | string,
-        subnetMask: string,
+    public constructor(ipRange?: IpRangeItem[] | string,
         {
             port = DEFAULT_PORT,
             timeout = 100,
             ipType = IpType.IPv4
         } = {}) {
+        if (!ipRange) {
+            ipRange = [
+                getNetworkRange()
+            ]
+        }
+
         if (typeof ipRange === 'string') {
             this.ipRange = getIpRangeFromString(ipRange as string)
         } else {
@@ -106,7 +111,7 @@ export default class Finder {
         }
 
         this.ipType = ipType
-        this.mask = subnetMask
+        this.mask = (ipRange as IpRangeItem[])[0].mask
         this.port = port
         this.timeout = timeout
     }
