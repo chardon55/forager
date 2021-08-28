@@ -1,6 +1,6 @@
 {
   "name": "forager-discovery",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Host discovery library",
   "main": "./dist/main.js",
   "types": "./dist/main.d.ts",
@@ -13,9 +13,6 @@
     "email": "charlesdong_2000@outlook.com",
     "url": "https://github.com/chardon55"
   },
-  "files": [
-    "./dist"
-  ],
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -40,7 +37,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "tsc && node .",
-    "test": "tsc && mocha --timeout 500000"
+    "start": "yarn build && node .",
+    "test": "yarn build && mocha --timeout 500000",
+    "publish": "yarn build"
   }
 }
