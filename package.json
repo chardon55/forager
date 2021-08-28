@@ -1,6 +1,6 @@
 {
   "name": "forager-discovery",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Host discovery library",
   "main": "./dist/main.js",
   "types": "./dist/main.d.ts",
