@@ -1,6 +1,6 @@
 {
   "name": "forager-discovery",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Host discovery library",
   "main": "./dist/main.js",
   "types": "./dist/main.d.ts",
@@ -17,9 +17,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "exports": {
-    "./": "./dist/"
-  },
   "devDependencies": {
     "@testdeck/mocha": "^0.1.2",
     "@types/mocha": "^9.0.0",
@@ -33,6 +30,7 @@
     "@types/ip": "^1.1.0",
     "express": "^4.17.1",
     "ip": "^1.1.5",
+    "jsonwebtoken": "^8.5.1",
     "node-abort-controller": "^3.0.0"
   },
   "scripts": {

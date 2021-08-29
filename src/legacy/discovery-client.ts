@@ -3,9 +3,6 @@ import * as net from "net"
 import { IPIterator, IpType, splitIpv4 } from "../utils/utils"
 import { IpRangeItem, DiscoveryResult } from "../utils/data-structure"
 
-/**
- * @deprecated Use Finder instead
- */
 export default class DiscoveryClient {
 
     private ipRange: IpRangeItem[]
