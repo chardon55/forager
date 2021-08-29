@@ -6,9 +6,9 @@ import { IpInfo, IpRangeItem } from "./data-structure"
 import { splitIpv4, bitNot } from "./utils"
 
 const DEFAULT_SEQUENCE = [
-    "WLAN",
     "Ethernet",
     "vEthernet",
+    "WLAN",
     "vEthernet (WLAN)",
 ]
 
