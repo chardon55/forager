@@ -1,9 +1,9 @@
 import * as dgram from "dgram"
 import * as ip from "ip"
-import Commdata, { HostRule } from "./utils/commdata"
-import { getHostIp, getMaskByIp } from "./utils/networking"
-import SocketFactory from "./utils/socket-factory"
-import { DEFAULT_PORT } from "./utils/utils"
+import Commdata, { HostRule } from "../utils/commdata"
+import { getHostIp, getMaskByIp } from "../utils/networking"
+import SocketFactory from "../utils/socket-factory"
+import { DEFAULT_PORT } from "../utils/utils"
 
 export class ListenerStretagy {
 

@@ -1,5 +1,6 @@
 const assert = require('assert')
-const dc = require('../dist/common-lib/service-discovery/discovery-client')
+const dc = require('../dist/legacy/discovery-client')
+const { getHostIp } = require('../dist/utils/networking')
 const express = require('express')
 
 describe('client-main', function () {
@@ -25,10 +26,10 @@ describe('client-main', function () {
             timeout: 100
         })
 
-        it ('Search for target server', async () => {
+        it('Search for target server', async () => {
             const value = await client.searchAsync()
             console.log(value)
-            assert.strictEqual(value.ip, "192.168.0.109")
+            assert.strictEqual(value.ip, getHostIp())
         })
     })
 })

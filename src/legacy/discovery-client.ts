@@ -1,6 +1,6 @@
 import * as net from "net"
 
-import { IPIterator, IpType, splitIpv4 } from "../utils/utils"
+import { getIpRangeFromString, IPIterator, IpType, splitIpv4 } from "../utils/utils"
 import { IpRangeItem, DiscoveryResult } from "../utils/data-structure"
 
 export default class DiscoveryClient {
@@ -28,28 +28,6 @@ export default class DiscoveryClient {
         this.baseUrl = value
     }
 
-    public static getIpRangeFromString(ipRangeString: string): IpRangeItem[] {
-        const ipList = ipRangeString.split(",")
-
-        let ipRange: IpRangeItem[] = []
-
-        for (let item of ipList) {
-            const newItem = new IpRangeItem()
-            const ipItem = item.split("-")
-
-            if (ipItem.length == 1) {
-                newItem.start = newItem.end = ipItem[0]
-            } else if (ipItem.length >= 2) {
-                newItem.start = ipItem[0]
-                newItem.end = ipItem[1]
-            }
-
-            ipRange.push(newItem)
-        }
-
-        return ipRange
-    }
-
     public constructor(ipRange: IpRangeItem[] | string,
         subnetMask: string,
         {
@@ -58,7 +36,7 @@ export default class DiscoveryClient {
             ipType = IpType.IPv4
         } = {}) {
         if (typeof ipRange === 'string') {
-            this.ipRange = DiscoveryClient.getIpRangeFromString(ipRange as string)
+            this.ipRange = getIpRangeFromString(ipRange as string)
         } else {
             this.ipRange = ipRange as IpRangeItem[]
         }
