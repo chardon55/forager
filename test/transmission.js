@@ -39,4 +39,8 @@ describe("transmission-test", function () {
         })
         assert.equal(result.hello, "Hello world!")
     })
+
+    this.afterAll(() => {
+        server.close()
+    })
 })
