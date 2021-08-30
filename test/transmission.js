@@ -5,7 +5,7 @@ describe("transmission-test", function () {
     this.timeout(0)
 
     const server = new Server({
-        address: '127.0.0.1',
+        address: '127.0.0.3',
         port: 3000,
         baseUrl: "/connect"
     })
@@ -17,7 +17,7 @@ describe("transmission-test", function () {
             console.log(address)
             console.log(port)
 
-            if (content === 'F') {
+            if (content.F === 'F') {
                 return {
                     hello: "Hello world!"
                 }
@@ -31,7 +31,12 @@ describe("transmission-test", function () {
     })
 
     it("try-transmit", async () => {
-        const result = await client.requestAsync("127.0.0.1", 3000, "/connect", "F")
-        assert.equal(JSON.parse(result).hello, "Hello world!")
+        const result = await client.requestAsync("127.0.0.3", 3000, {
+            baseUrl: "/connect",
+            body: {
+                F: "F"
+            }
+        })
+        assert.equal(result.hello, "Hello world!")
     })
 })

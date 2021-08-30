@@ -1,12 +1,11 @@
 import * as http from 'http'
 
 import * as express from 'express'
+import * as axios from 'axios'
 import { DEFAULT_TRANSMISSION_PORT } from "./utils/utils"
 import { ParamsDictionary } from 'express-serve-static-core'
 import { getHostIp } from './utils/networking'
 import { IEncryptor } from './utils/security'
-
-import * as semaphore from 'semaphore'
 
 export class Server {
     private address: string
@@ -25,16 +24,18 @@ export class Server {
         this.encryptor = encryptor
     }
 
-    public listen(onResponse: (address: string, port: number, params: ParamsDictionary, content: string) => object) {
+    public listen(onResponse: (address: string, port: number, params: ParamsDictionary, content: any) => object) {
         this.close()
 
         const app = express()
 
-        app.post(this.baseUrl, (req, res) => {
-            const hostParts = req.headers.host.split(":")
-            let port = hostParts.length == 1 ? 80 : parseInt(hostParts[1])
+        app.use(express.urlencoded({ extended: true }))
+        app.use(express.json())
 
-            let resBody = onResponse(hostParts[0], port, req.params, req.body)
+        app.post(this.baseUrl, (req, res) => {
+
+            console.log(req.body)
+            let resBody = onResponse(req.socket.remoteAddress, req.socket.remotePort, req.params, req.body)
             res.status(200).json(resBody)
         })
 
@@ -78,55 +79,30 @@ export class Client {
         this.encryptor = encryptor
     }
 
-    public async requestAsync(destAddress: string, destPort: number, baseUrl: string, body?: string, headers: {} = {}): Promise<string> {
+    public async requestAsync(destAddress: string, destPort: number, {
+        baseUrl = "/",
+        params = {},
+        body = null,
+        headers = {}
+    }): Promise<any> {
+
         const urlPrefix = baseUrl.startsWith("/") ? "" : "/"
 
-        const sem = semaphore(2)
-        sem.take(2, () => { })
-
-        let responseString: string = ""
-
-        const req = http.request({
-            hostname: destAddress,
-            port: destPort,
-            path: urlPrefix + baseUrl,
+        const response = await axios.default({
             method: "POST",
+            url: `http://${destAddress}:${destPort}${urlPrefix}${baseUrl}`,
+            data: body,
+            params: params,
             headers: headers,
-        }, res => {
-            res.on('data', chunk => {
-                responseString += chunk
-            })
-
-            res.on('end', () => {
-                sem.leave()
-            })
         })
 
-        req.on('error', e => {
-            console.error(`Error: ${e}`)
-        })
-
-        if (!!body) {
-            req.write(body)
-        }
-
-        req.end(() => {
-            sem.leave()
-        })
-
-        return await new Promise<string>((resolve, reject) => {
-            sem.take(2, () => {
-                if (!this.encryptor) {
-                    resolve(responseString)
-                } else {
-                    const result = this.encryptor.decrypt(responseString)
-                    if (typeof result == 'string') {
-                        resolve(result)
-                    } else {
-                        resolve(JSON.stringify(result))
-                    }
-                }
-            })
+        return await new Promise<any>((resolve, reject) => {
+            if (!this.encryptor) {
+                resolve(response.data)
+            } else {
+                const result = this.encryptor.decrypt(response.data)
+                resolve(result)
+            }
         })
     }
 
