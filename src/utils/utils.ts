@@ -2,6 +2,7 @@ import { IpRangeItem } from "./data-structure"
 import { getMaskByIp } from "./networking"
 
 export const DEFAULT_PORT = 19856
+export const DEFAULT_TRANSMISSION_PORT = 19862
 
 export function splitIpv4(ip: string): number[] {
     return ip.split(".").map(value => parseInt(value))

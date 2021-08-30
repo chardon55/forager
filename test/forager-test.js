@@ -1,13 +1,13 @@
-const assert = require('assert')
-const Listener = require('../dist/listener')
-const express = require('express')
+// const assert = require('assert')
+// const Listener = require('../dist/listener')
+// const express = require('express')
 
-describe('client-main', function () {
-    this.timeout(0)
+// describe('client-main', function () {
+//     this.timeout(0)
 
-    let listener
+//     let listener
 
-    before('load-forager', function () {
-        listener = new Listener()
-    })
-}
+//     before('load-forager', function () {
+//         listener = new Listener()
+//     })
+// })

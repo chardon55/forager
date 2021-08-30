@@ -1,13 +1,13 @@
 import * as dgram from "dgram"
-import Commdata, { HostRule } from "./utils/commdata"
+import Commdata, { HostRule } from "../utils/commdata"
 import * as ip from 'ip'
 import { AbortController } from 'node-abort-controller'
 
-import { DiscoveryResult, IpRangeItem } from "./utils/data-structure"
-import { DEFAULT_PORT, getIpRangeFromString, IPIterator, IpType } from "./utils/utils"
-import SocketFactory from "./utils/socket-factory"
+import { DiscoveryResult, IpRangeItem } from "../utils/data-structure"
+import { DEFAULT_PORT, getIpRangeFromString, IPIterator, IpType } from "../utils/utils"
+import SocketFactory from "../utils/socket-factory"
 import { ListenerStretagy } from "./listener"
-import { getHostAddressInfo, getHostIp, getNetworkRange } from "./utils/networking"
+import { getHostAddressInfo, getHostIp, getNetworkRange } from "../utils/networking"
 
 export default class Finder {
 
