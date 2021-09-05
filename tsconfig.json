@@ -1,18 +1,18 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "ES6",
-    "sourceMap": true,
-    "moduleResolution": "Node",
-    "outDir": "./dist",
-    "declaration": true,
-    "rootDir": "src"
-  },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
-  "include": [
-    "src"
-  ]
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES6",
+        "sourceMap": true,
+        "moduleResolution": "Node",
+        "outDir": "./dist",
+        "declaration": true,
+        "rootDir": "src"
+    },
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ],
+    "include": [
+        "src/**/*"
+    ]
 }

@@ -1,7 +1,7 @@
 import * as http from 'http'
 
 import * as express from 'express'
-import * as axios from 'axios'
+import axios from 'axios'
 import { DEFAULT_TRANSMISSION_PORT } from "./utils/utils"
 import { ParamsDictionary } from 'express-serve-static-core'
 import { getHostIp } from './utils/networking'
@@ -36,7 +36,9 @@ export class Server {
 
             console.log(req.body)
             let resBody = onResponse(req.socket.remoteAddress, req.socket.remotePort, req.params, req.body)
-            res.status(200).json(resBody)
+            if (!resBody) {
+                res.status(200).json(resBody)
+            }
         })
 
         this.server = app.listen(this.port, this.address, () => {
@@ -88,7 +90,7 @@ export class Client {
 
         const urlPrefix = baseUrl.startsWith("/") ? "" : "/"
 
-        const response = await axios.default({
+        const response = await axios({
             method: "POST",
             url: `http://${destAddress}:${destPort}${urlPrefix}${baseUrl}`,
             data: body,
