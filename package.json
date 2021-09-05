@@ -1,11 +1,11 @@
 {
   "name": "forager-discovery",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Host discovery library",
-  "main": "./lib/main.js",
-  "types": "./lib/main.d.ts",
+  "main": "./dist//main.js",
+  "types": "./dist//main.d.ts",
   "files": [
-    "lib"
+    "dist"
   ],
   "author": {
     "name": "chardon55",
