@@ -17,6 +17,8 @@ export default class DiscoveryClient {
 
     private timeout: number
 
+    private locked = false
+
     // Reserved
     // private portRange: string = ""
 
@@ -105,12 +107,20 @@ export default class DiscoveryClient {
             timeout = this.timeout,
             ipType = this.ipType,
         } = {}): Promise<DiscoveryResult> {
+        if (this.locked) {
+            return null
+        }
+
         console.log("Searching...")
         for (let batch of ipRange) {
             const ipIter = new IPIterator(batch.start, ipType, subnetMask, CIDR)
 
             let current: string = ipIter.CurrentIp
             while (current !== null && current != batch.end) {
+                if (this.locked) {
+                    break
+                }
+
                 const result = await this.attemptToConnectAsync(current, {
                     ipRange: ipRange,
                     subnetMask: subnetMask,
@@ -127,6 +137,18 @@ export default class DiscoveryClient {
         }
 
         return null
+    }
+
+    public lock() {
+        this.locked = true
+    }
+
+    public unlock() {
+        this.locked = false
+    }
+
+    public get Locked() {
+        return this.locked
     }
 
     /**
