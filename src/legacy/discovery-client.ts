@@ -116,7 +116,7 @@ export default class DiscoveryClient {
             const ipIter = new IPIterator(batch.start, ipType, subnetMask, CIDR)
 
             let current: string = ipIter.CurrentIp
-            while (current !== null && current != batch.end) {
+            while (current !== null && current != batch.end || current == batch.start && current == batch.end) {
                 if (this.locked) {
                     break
                 }
