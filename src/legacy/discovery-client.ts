@@ -88,6 +88,10 @@ export default class DiscoveryClient {
         timeout: this.timeout,
         ipType: this.ipType,
     }): Promise<DiscoveryResult> {
+        if (this.locked) {
+            return null
+        }
+
         console.log(`IP: ${ip}`)
         const socket = new net.Socket()
 
