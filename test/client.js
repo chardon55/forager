@@ -22,7 +22,7 @@ describe('client-main', function () {
     })
 
     describe('#find', function () {
-        const client = new dc.default("192.168.0.0-192.168.0.255", "255.255.255.0", {
+        const client = new dc.default("192.168.43.100-192.168.43.182", "255.255.255.0", {
             timeout: 100
         })
 

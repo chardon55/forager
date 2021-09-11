@@ -47,15 +47,21 @@ export default class DiscoveryClient {
         this.timeout = timeout
     }
 
-    private connect(socket: net.Socket, ip: string, rawHttp: string = null) {
+    private connect(socket: net.Socket, ip: string, options = {
+        ipRange: this.ipRange,
+        subnetMask: this.mask,
+        port: this.port,
+        timeout: this.timeout,
+        ipType: this.ipType,
+    }, rawHttp: string = null) {
         let result = new DiscoveryResult()
 
         result.ip = ip
-        result.port = this.port.toString()
+        result.port = options.port.toString()
         result.msg = ""
 
         return new Promise<DiscoveryResult>((resolve, reject) => {
-            socket.connect(this.port, ip, () => {
+            socket.connect(options.port, ip, () => {
                 console.log("Connected!" + ip)
                 resolve(result)
             }).on('error', err => {
@@ -69,11 +75,17 @@ export default class DiscoveryClient {
             }).on('close', () => {
                 console.log("Closing... " + ip)
                 // resolve(null)
-            }).setTimeout(this.timeout)
+            }).setTimeout(options.timeout)
         })
     }
 
-    private async attemptToConnectAsync(ip: string): Promise<DiscoveryResult> {
+    private async attemptToConnectAsync(ip: string, options = {
+        ipRange: this.ipRange,
+        subnetMask: this.mask,
+        port: this.port,
+        timeout: this.timeout,
+        ipType: this.ipType,
+    }): Promise<DiscoveryResult> {
         console.log(`IP: ${ip}`)
         const socket = new net.Socket()
 
@@ -82,17 +94,30 @@ export default class DiscoveryClient {
         // // rawHttp += `Accept: application/json\n`
         // rawHttp += `Connection: keep-alive\n`
 
-        return await this.connect(socket, ip)
+        return await this.connect(socket, ip, options)
     }
 
-    public async searchAsync(CIDR: boolean = true): Promise<DiscoveryResult> {
+    public async searchAsync(CIDR: boolean = true,
+        {
+            ipRange = this.ipRange,
+            subnetMask = this.mask,
+            port = this.port,
+            timeout = this.timeout,
+            ipType = this.ipType,
+        } = {}): Promise<DiscoveryResult> {
         console.log("Searching...")
-        for (let batch of this.ipRange) {
-            const ipIter = new IPIterator(batch.start, this.ipType, this.mask, CIDR)
+        for (let batch of ipRange) {
+            const ipIter = new IPIterator(batch.start, ipType, subnetMask, CIDR)
 
             let current: string = ipIter.CurrentIp
             while (current !== null && current != batch.end) {
-                const result = await this.attemptToConnectAsync(current)
+                const result = await this.attemptToConnectAsync(current, {
+                    ipRange: ipRange,
+                    subnetMask: subnetMask,
+                    port: port,
+                    timeout: timeout,
+                    ipType: ipType,
+                })
                 if (result !== null) {
                     return result
                 }

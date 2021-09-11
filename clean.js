@@ -1,7 +1,7 @@
 const fs = require('fs')
 
 const dirs = [
-    "./dist",
+    "./dist/",
     "./out"
 ]
 
