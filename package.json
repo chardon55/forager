@@ -1,6 +1,6 @@
 {
   "name": "forager-discovery",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Host discovery library",
   "main": "./index.js",
   "types": "./index.d.ts",
@@ -43,6 +43,6 @@
     "clean": "node ./clean.js",
     "start": "yarn build && node .",
     "test": "yarn build && mocha --timeout 500000",
-    "publish": "yarn build"
+    "prepublish": "yarn build"
   }
 }
