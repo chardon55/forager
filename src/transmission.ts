@@ -6,6 +6,7 @@ import { DEFAULT_TRANSMISSION_PORT } from "./utils/utils"
 import { ParamsDictionary } from 'express-serve-static-core'
 import { getHostIp } from './utils/networking'
 import { IEncryptor } from './utils/security'
+import { RequestFailedError } from './exceptions'
 
 export class Server {
     private address: string
@@ -97,6 +98,10 @@ export class Client {
             params: params,
             headers: headers,
         })
+
+        if (/^[34]\d\d$/.test(response.status.toString())) {
+            throw new RequestFailedError(`Status code: ${response.status}, ${response.statusText}`)
+        }
 
         return await new Promise<any>((resolve, reject) => {
             if (!this.encryptor) {

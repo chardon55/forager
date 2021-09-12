@@ -3,3 +3,9 @@ export class DataAccessError extends Error {
         super(message)
     }
 }
+
+export class RequestFailedError extends DataAccessError {
+    public constructor(message?: string) {
+        super(message)
+    }
+}
