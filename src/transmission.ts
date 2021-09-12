@@ -97,6 +97,7 @@ export class Client {
             data: body,
             params: params,
             headers: headers,
+            timeout: 5000,
         })
 
         if (/^[34]\d\d$/.test(response.status.toString())) {
