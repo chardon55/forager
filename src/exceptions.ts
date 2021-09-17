@@ -5,7 +5,14 @@ export class DataAccessError extends Error {
 }
 
 export class RequestFailedError extends DataAccessError {
-    public constructor(message?: string) {
+    private statusCode: number
+
+    public get StatusCode() {
+        return this.statusCode
+    }
+
+    public constructor(statusCode?: number, message?: string) {
         super(message)
+        this.statusCode = statusCode
     }
 }

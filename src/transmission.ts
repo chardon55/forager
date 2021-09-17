@@ -1,7 +1,7 @@
 import * as http from 'http'
 
 import * as express from 'express'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { DEFAULT_TRANSMISSION_PORT } from "./utils/utils"
 import { ParamsDictionary } from 'express-serve-static-core'
 import { getHostIp } from './utils/networking'
@@ -91,17 +91,22 @@ export class Client {
 
         const urlPrefix = baseUrl.startsWith("/") ? "" : "/"
 
-        const response = await axios({
-            method: "POST",
-            url: `http://${destAddress}:${destPort}${urlPrefix}${baseUrl}`,
-            data: body,
-            params: params,
-            headers: headers,
-            timeout: 5000,
-        })
+        let response: AxiosResponse<any>
+        try {
+            response = await axios({
+                method: "POST",
+                url: `http://${destAddress}:${destPort}${urlPrefix}${baseUrl}`,
+                data: body,
+                params: params,
+                headers: headers,
+                timeout: 5000,
+            })
+        } catch (error) {
+            throw new RequestFailedError(error.response.status, error.response.data)
+        }
 
         if (/^[34]\d\d$/.test(response.status.toString())) {
-            throw new RequestFailedError(`Status code: ${response.status}, ${response.statusText}`)
+            throw new RequestFailedError(response.status, response?.data)
         }
 
         return await new Promise<any>((resolve, reject) => {
