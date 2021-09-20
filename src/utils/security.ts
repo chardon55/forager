@@ -33,7 +33,7 @@ export class JwtAsymmetricEncryptor implements IEncryptor {
     private privateKey: string = null
     private publicKey: string = null
 
-    private algorithm: AsymmeticAlgorithm = 'RS512'
+    private algorithm: AsymmeticAlgorithm = 'RS256'
 
     public get Algorithm(): AsymmeticAlgorithm {
         return this.algorithm
